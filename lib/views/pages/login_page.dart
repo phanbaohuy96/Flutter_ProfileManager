@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:profile_manager/views/pages/profile_info_page.dart';
 import '../../models/user.dart';
-import '../commons/app_background.dart';
-import '../commons/submit_button.dart';
+import '../commons/app_background_view.dart';
+import '../commons/submit_button_view.dart';
 import '../../blocs/bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   _genLoginBtnByStatus(ButtonStatus status, Function onTap)
   {
-    return SubmitButton(
+    return SubmitButtonView(
       size: _buttonLoginSize,
       text: Text("Sign in",style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.w300, letterSpacing: 0.3,)),
       status: status,
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          AppBackground(),
+          AppBackgroundView(),
           GestureDetector(
             onTap:(){
               FocusScope.of(context).requestFocus(new FocusNode());

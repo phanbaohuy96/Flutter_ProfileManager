@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../styles/colors_style.dart';
 
-class SubmitButton extends StatefulWidget {
+class SubmitButtonView extends StatefulWidget {
 
   final Size size;
   final Function onTap;
   final Text text;
   final ButtonStatus status;
 
-  SubmitButton({ this.size, this.onTap, this.text, this.status}) : super(key: UniqueKey());
+  SubmitButtonView({ this.size, this.onTap, this.text, this.status}) : super(key: UniqueKey());
 
   @override
   _SubmitButtonState createState() => _SubmitButtonState();
@@ -19,7 +19,7 @@ enum ButtonStatus{
   rollback
 }
 
-class _SubmitButtonState extends State<SubmitButton> with SingleTickerProviderStateMixin{
+class _SubmitButtonState extends State<SubmitButtonView> with SingleTickerProviderStateMixin{
   
   Size _buttonSize;
 

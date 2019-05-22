@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import '../styles/colors_style.dart';
 
-class AppBackground extends StatelessWidget {
+class AppBackgroundView extends StatelessWidget {
 
   final Color firstColor, secondColor, thirdColor;
 
-  AppBackground():
+  AppBackgroundView():
   firstColor = firstCircleColor,
   secondColor = secondCircleColor,
   thirdColor = thirdCircleColor;
 
-  AppBackground.detail():
+  AppBackgroundView.detail():
   firstColor = firstDetailCircleColor,
   secondColor = secondDetailCircleColor,
   thirdColor = thirdDetailCircleColor;
