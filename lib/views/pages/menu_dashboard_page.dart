@@ -44,15 +44,17 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   @override
   Widget build(BuildContext context) {
     screenSize = MediaQuery.of(context).size;
-    return AnimatedBuilder(
-      animation: _colorAnimation,
-      builder: (context, child) => Scaffold(
-        backgroundColor: _colorAnimation.value,
-        body: Stack(
-          children: <Widget>[
-            menu(context),
-            dashboard(context),
-          ],
+    return Scaffold(
+      body: AnimatedBuilder(
+        animation: _colorAnimation,
+        builder: (context, child) => Scaffold(
+          backgroundColor: _colorAnimation.value,
+          body: Stack(
+            children: <Widget>[
+              menu(context),
+              dashboard(context),
+            ],
+          ),
         ),
       ),
     );
@@ -80,8 +82,8 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   }
 
   getColorMenuItem(int idx) => _selectedIdx == idx ? Colors.white : Colors.white54;
-  getStyleMenuItem(int idx) => _selectedIdx == idx ? TextStyle(color: Colors.white, fontSize: 20) : TextStyle(color: Colors.white54, fontSize: 18);
-  
+  getStyleMenuItem(int idx) => _selectedIdx == idx ? TextStyle(color: Colors.white, fontSize: 20) : TextStyle(color: Colors.white54, fontSize: 18); 
+
 
   Widget menu(context)
   {
@@ -153,7 +155,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
       duration: duration,
       top: 0,
       bottom: 0,
-      right: isCollapsed ? 0 : -0.4 * screenSize.width,
+      right: isCollapsed ? 0 : -0.66 * screenSize.width,
       left: isCollapsed ? 0 : 0.66 * screenSize.width,
       child: ScaleTransition(
         scale: _scaleAnimation,
@@ -163,31 +165,39 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
             borderRadius: BorderRadius.all(Radius.circular(isCollapsed ? 0 : 30)),
             elevation: 8,
             color: _colorAnimation.value,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 40.0, right: 16.0),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(isCollapsed? Icons.menu : Icons.arrow_back, color: _colorDashboardBarItemAnimation.value,),
-                        onPressed: (){
-                          setState(() {
-                            collapseAni();
-                          });
-                        },
-                      ),
-                      Text("Dashboard", style: TextStyle(fontSize: 20, color: _colorDashboardBarItemAnimation.value),),                    
-                      IconButton(
-                        icon: Icon(Icons.settings, color: _colorDashboardBarItemAnimation.value),
-                        onPressed: (){},
-                      )
-                    ],
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 24, width: 320,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(isCollapsed? Icons.menu : Icons.arrow_back, color: _colorDashboardBarItemAnimation.value,),
+                      onPressed: (){
+                        setState(() {
+                          collapseAni();
+                        });
+                      },
+                    ),
+                    Text("My cards", style: TextStyle(fontSize: 20, color: _colorDashboardBarItemAnimation.value, fontWeight: FontWeight.bold),),                    
+                    IconButton(
+                      icon: Icon(Icons.add_circle_outline, color: _colorDashboardBarItemAnimation.value),
+                      onPressed: (){},
+                    )
+                  ],
+                ),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(isCollapsed ? 0 : 30)),
+                      color: Colors.grey.withOpacity(0.07),                     
+                    ),
+                    child: getMainPage(),
                   ),
-                ],
-              ),
+                )
+                                
+              ],
             ),
           ),
         ),
@@ -197,11 +207,13 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
 
   getMainPage()
   {
-    switch(_selectedIdx)
-    {
-      case 0: break;
-      case 0: break;
-      case 0: UtilityBills(isCollapsed: isCollapsed,);
-    }
+    // switch(2)
+    // {
+    //   case 0: break;
+    //   case 1: break;
+    //   case 2: return UtilityBills(isCollapsed: isCollapsed,);
+      
+    // }
+    return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
   }
 }
