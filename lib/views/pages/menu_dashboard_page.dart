@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profile_manager/views/commons/circle_image_view.dart';
+import 'package:profile_manager/views/pages/management_account_page.dart';
+import 'package:profile_manager/views/pages/management_spending_page.dart';
 import 'package:profile_manager/views/pages/utility_bills_page.dart';
 import 'package:profile_manager/views/styles/colors_style.dart';
 
@@ -21,6 +23,14 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   Animation<Offset> _slideAnimation;
   Animation _colorAnimation;
   Animation _colorDashboardBarItemAnimation;
+
+  //page
+  // UtilityBills _utilityBills;
+  // ManagementAccountPage _accountManagerPage;
+  // ManagementSpendingPage _managementSpendingPage;
+
+  //props
+  List<String> menuChild = ["Spendings", "Accounts", "Utility Bills", ];
 
   @override
   void initState()
@@ -61,7 +71,6 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   }
 
   changeSelected(int idx){
-    if(idx != _selectedIdx)
     setState(() {      
       _selectedIdx = idx;
       collapseAni();
@@ -86,8 +95,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
 
 
   Widget menu(context)
-  {
-    List<String> menuChild = ["Dashboard", "Accounts", "Utility Bills", ];
+  {    
     return SlideTransition(
       position:_slideAnimation,
       child: ScaleTransition(
@@ -155,8 +163,8 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
       duration: duration,
       top: 0,
       bottom: 0,
-      right: isCollapsed ? 0 : -0.66 * screenSize.width,
-      left: isCollapsed ? 0 : 0.66 * screenSize.width,
+      right: isCollapsed ? 0 : -0.5 * screenSize.width,
+      left: isCollapsed ? 0 : 0.5 * screenSize.width,
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: AnimatedBuilder(
@@ -180,7 +188,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                         });
                       },
                     ),
-                    Text("My cards", style: TextStyle(fontSize: 20, color: _colorDashboardBarItemAnimation.value, fontWeight: FontWeight.bold),),                    
+                    Text(menuChild[_selectedIdx], style: TextStyle(fontSize: 20, color: _colorDashboardBarItemAnimation.value, fontWeight: FontWeight.bold),),                    
                     IconButton(
                       icon: Icon(Icons.add_circle_outline, color: _colorDashboardBarItemAnimation.value),
                       onPressed: (){},
@@ -191,12 +199,11 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(isCollapsed ? 0 : 30)),
-                      color: Colors.grey.withOpacity(0.07),                     
+                      color: Colors.grey.withOpacity(0.1),                     
                     ),
                     child: getMainPage(),
                   ),
                 )
-                                
               ],
             ),
           ),
@@ -207,13 +214,32 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
 
   getMainPage()
   {
-    // switch(2)
-    // {
-    //   case 0: break;
-    //   case 1: break;
-    //   case 2: return UtilityBills(isCollapsed: isCollapsed,);
-      
-    // }
-    return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+    switch(_selectedIdx)
+    {
+      case 0: 
+      {
+        // if(_managementSpendingPage == null)
+        // {
+        //   _managementSpendingPage = ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+        // }
+        return ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+      }
+      case 1: 
+      {
+        // if(_accountManagerPage == null)
+        // {
+        //   _accountManagerPage = ManagementAccountPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+        // }
+        return ManagementAccountPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+      }
+      case 2: 
+      {
+        // if(_utilityBills == null)
+        // {
+        //   _utilityBills = UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+        // }
+        return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+      }      
+    }
   }
 }

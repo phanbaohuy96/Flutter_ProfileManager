@@ -6,7 +6,7 @@ class UtilityBills extends StatefulWidget {
   final bool isCollapsed;
   final Color mainColor;
 
-  const UtilityBills({Key key, this.isCollapsed, this.mainColor = Colors.white}) : super(key: key);
+  UtilityBills({this.isCollapsed, this.mainColor = Colors.white});
   @override
   _UtilityBillsState createState() => _UtilityBillsState();
 }
@@ -73,8 +73,7 @@ class _UtilityBillsState extends State<UtilityBills> {
           ),
         ),
         Expanded(
-          child: Container(
-            color: Colors.transparent,
+          child: SizedBox(
             child: Padding(
               padding: EdgeInsets.only(right: 20, left: 20),
               child: ListView.builder(
@@ -83,23 +82,11 @@ class _UtilityBillsState extends State<UtilityBills> {
                 itemBuilder: (context, idx){
                   return buildListTransaction(idx);
                 },
-                itemCount: 7,
+                itemCount: 10,
               ),              
             ),
           ),
         ),
-        //Padding(
-          //padding: EdgeInsets.only(right: 20, left: 20),
-          // child: ListView.builder(
-          //   padding: EdgeInsets.zero,
-          //   shrinkWrap: true,
-          //   itemBuilder: (context, idx){
-          //     return buildListTransaction(idx);
-          //   },
-          //   itemCount: 5,
-          // ),
-          
-        //)
       ],
     );
   }
@@ -181,14 +168,14 @@ class _UtilityBillsState extends State<UtilityBills> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Macbook Pro 15", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18)),
-                    Text("Apple", style: TextStyle(color: Colors.grey, fontSize: 16))
+                    Text("Macbook Pro 15", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
+                    Text("Apple", style: TextStyle(color: Colors.grey, fontSize: 14))
                   ],
                 ),
               ],
             ),
             
-            Text("-2499 \$", style: TextStyle(color: Colors.red, fontSize: 18))
+            Text("-2499 \$", style: TextStyle(color: Colors.red, fontSize: 16))
           ],
         ),
       ),
