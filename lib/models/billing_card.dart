@@ -63,7 +63,7 @@ class Transaction{
   {
     var currentDate = DateTime.now();
     if(currentDate.day == date.day && currentDate.month == date.month && currentDate.year == date.year) return "Today";
-    if(currentDate.difference(date).inDays <= date.weekday){
+    if(currentDate.difference(date).inDays <= currentDate.weekday - 1){
       switch(date.weekday)
       {
         case DateTime.monday: return "Monday";
