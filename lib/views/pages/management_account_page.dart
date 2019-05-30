@@ -33,7 +33,7 @@ class _ManagementAccountPageState extends State<ManagementAccountPage> {
             {
               return buildItemAcountService(idx);
             },
-            itemCount: 3,
+            itemCount: 20,
           ),
         ),
 
@@ -50,7 +50,6 @@ class _ManagementAccountPageState extends State<ManagementAccountPage> {
         elevation: 5,
         child: Container(        
           width: _screenSize.width / 2.5, 
-          //color: idx % 2 == 0? Colors.black : Colors.red,
         ),
       ),
     );

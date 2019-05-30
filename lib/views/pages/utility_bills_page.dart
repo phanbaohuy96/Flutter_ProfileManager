@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profile_manager/models/billing_card.dart';
 import 'package:profile_manager/views/commons/doc_list_index_view.dart';
 import 'package:profile_manager/views/styles/colors_style.dart';
 
@@ -16,6 +17,7 @@ class _UtilityBillsState extends State<UtilityBills> {
   Size _viewSize;
   int _firstIdxPage = 1;
   int _selectedIdx = 1;
+  
 
 
   PageController _pageController;
@@ -29,7 +31,6 @@ class _UtilityBillsState extends State<UtilityBills> {
   @override
   Widget build(BuildContext context) {
     _viewSize = MediaQuery.of(context).size;
-    print(_viewSize);
     return Column(      
       children: <Widget>[
         Container(
@@ -47,11 +48,11 @@ class _UtilityBillsState extends State<UtilityBills> {
                     return buildListBillingCard(idx);
                   },
                   controller: _pageController,
-                  itemCount: 3,
+                  itemCount: billingCards.length,
                   onPageChanged: onPageChanged,
                 ),
               ),
-              DocListIndex(numItems: 3, selectedIdx: _selectedIdx, normalColor: Colors.grey.withOpacity(0.3),)
+              DocListIndex(numItems: billingCards.length, selectedIdx: _selectedIdx, normalColor: Colors.grey.withOpacity(0.3),)
             ],
           ),
         ),
@@ -62,7 +63,7 @@ class _UtilityBillsState extends State<UtilityBills> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Transaction", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: widget.isCollapsed? Colors.black : Colors.white),),
+              Text("Transactions", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: widget.isCollapsed? Colors.black : Colors.white),),
               IconButton(
                 icon: Icon(Icons.transform, color: widget.isCollapsed? Colors.black : Colors.white), 
                 onPressed: (){
@@ -82,7 +83,7 @@ class _UtilityBillsState extends State<UtilityBills> {
                 itemBuilder: (context, idx){
                   return buildListTransaction(idx);
                 },
-                itemCount: 10,
+                itemCount: billingCards[_selectedIdx].transactions.length,
               ),              
             ),
           ),
@@ -146,13 +147,23 @@ class _UtilityBillsState extends State<UtilityBills> {
       _selectedIdx = value;
     });
   }
+
+  String _transactionDate;
   
   Widget buildListTransaction(int idx) {
-    return Container( 
-      margin: EdgeInsets.only(bottom: 10),
+    Transaction temp = billingCards[_selectedIdx].transactions[idx];
+    Text dateSoft;
+    if(_transactionDate == null || _transactionDate != temp.getDateStringCurrentWeek())
+    {
+      dateSoft = Text(temp.getDateStringCurrentWeek(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),);
+      _transactionDate = temp.getDateStringCurrentWeek();
+    }
+
+    var item = Container( 
+      margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(25)),
-        color: Colors.white
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        color: widget.mainColor
       ),
       child: Padding(
         padding: EdgeInsets.only(right: 10, left: 10, bottom: 5, top: 5),
@@ -163,22 +174,33 @@ class _UtilityBillsState extends State<UtilityBills> {
             Row(
               children: <Widget>[
                 SizedBox(width: 5,),
-                Icon(Icons.cloud, color: Colors.black,),
+                Icon(Icons.cloud, color: Colors.grey,),
                 SizedBox(width: 10,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Macbook Pro 15", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
-                    Text("Apple", style: TextStyle(color: Colors.grey, fontSize: 14))
+                    Text(temp.action.name, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
+                    SizedBox(height: 3,),
+                    Text(temp.actionPlace.name, style: TextStyle(color: Colors.grey, fontSize: 14))
                   ],
                 ),
               ],
             ),
             
-            Text("-2499 \$", style: TextStyle(color: Colors.red, fontSize: 16))
+            Text(temp.getCostVND(), style: TextStyle(color: temp.isSpend? Colors.red : Colors.green, fontSize: 16))
           ],
         ),
       ),
     );
+
+    return dateSoft != null? 
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[      
+        SizedBox(height: idx != 0? 10 : 0,),
+        Padding( padding: EdgeInsets.only(bottom: 5, left: 10), child: dateSoft,),
+        item
+    ],)
+    : item;
   }
 }
