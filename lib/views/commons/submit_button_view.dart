@@ -7,8 +7,9 @@ class SubmitButtonView extends StatefulWidget {
   final Function onTap;
   final Text text;
   final ButtonStatus status;
+  final Function onRoolBackCompleted;
 
-  SubmitButtonView({ this.size, this.onTap, this.text, this.status}) : super(key: UniqueKey());
+  SubmitButtonView({ this.size, this.onTap, this.text, this.status, this.onRoolBackCompleted}) : super(key: UniqueKey());
 
   @override
   _SubmitButtonState createState() => _SubmitButtonState();
@@ -36,7 +37,8 @@ class _SubmitButtonState extends State<SubmitButtonView> with SingleTickerProvid
     _controller.addListener(() => setState(() {}) );
     _controller.addStatusListener((status) {      
       setState(() {
-        
+        if(status == AnimationStatus.completed && widget.status == ButtonStatus.rollback && widget.onRoolBackCompleted != null) widget.onRoolBackCompleted();
+
       });
     });
 
