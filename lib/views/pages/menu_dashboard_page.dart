@@ -14,7 +14,7 @@ class MenuDashboardPage extends StatefulWidget {
 class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTickerProviderStateMixin {
 
   bool isCollapsed = true;
-  int _selectedIdx = 0;
+  int _selectedIdx = 1;
   Size screenSize;
   Duration duration = const Duration(milliseconds: 300);
   AnimationController _controller;
@@ -176,34 +176,60 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
             child: Column(
               children: <Widget>[
                 SizedBox(height: 24, width: 320,),
+
+                //appbar
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(isCollapsed? Icons.menu : Icons.arrow_back, color: _colorDashboardBarItemAnimation.value,),
+                      icon: Icon(
+                        isCollapsed? Icons.menu : Icons.arrow_back, 
+                        color: _colorDashboardBarItemAnimation.value,
+                      ),
                       onPressed: (){
                         setState(() {
                           collapseAni();
                         });
                       },
                     ),
-                    Text(menuChild[_selectedIdx], style: TextStyle(fontSize: 20, color: _colorDashboardBarItemAnimation.value, fontWeight: FontWeight.bold),),                    
+                    Text(menuChild[_selectedIdx], 
+                      style: TextStyle(fontSize: 20, color: _colorDashboardBarItemAnimation.value, fontWeight: FontWeight.bold),
+                    ),                    
                     IconButton(
                       icon: Icon(Icons.add_circle_outline, color: _colorDashboardBarItemAnimation.value),
                       onPressed: (){},
                     )
                   ],
                 ),
+
+                //main page
                 Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(isCollapsed ? 0 : 30)),
-                      color: Colors.grey.withOpacity(0.1),                     
-                    ),
+                    color: Colors.grey.withOpacity(0.1),
                     child: getMainPage(),
                   ),
+                ),
+
+                //bottom bar
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(isCollapsed ? 0 : 30), bottomRight: Radius.circular(isCollapsed ? 0 : 30)),
+                    color: Colors.grey.withOpacity(0.1),
+                  ),
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(isCollapsed ? 0 : 30), bottomRight: Radius.circular(isCollapsed ? 0 : 30)),
+                      color: _colorAnimation.value,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: _buildBottomBar(),
+                    ),
+                  ),
                 )
+                
               ],
             ),
           ),
@@ -241,5 +267,53 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
         return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
       }      
     }
+  }
+
+  List<Widget> _buildBottomBar()
+  {
+    List<Widget> buttons = [
+      IconButton(
+        icon: Icon(
+          Icons.bubble_chart, 
+          color: _colorDashboardBarItemAnimation.value,
+        ),
+        onPressed: (){
+        },
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.home, 
+          color: _colorDashboardBarItemAnimation.value,
+        ),
+        onPressed: (){
+        },
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.ring_volume, 
+          color: _colorDashboardBarItemAnimation.value,
+        ),
+        onPressed: (){
+        },
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.person, 
+          color: _colorDashboardBarItemAnimation.value,
+        ),
+        onPressed: (){
+        },
+      ),
+    ];
+    switch(_selectedIdx)
+    {
+      case 0:
+        break;
+      case 1:
+        break;
+      case 2:
+        break; 
+    }
+    return buttons;
   }
 }
