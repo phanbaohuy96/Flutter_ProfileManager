@@ -18,8 +18,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
 
   final _loginBloc = LoginBloc();
   Size _buttonLoginSize = Size(0, 0);
-  TextEditingController _editingUserNameController, _editingPassController;
-  bool canCheckBiometric;
+  BiometricAuth _biometricType;
   String _pass = "";
   
 
@@ -49,11 +48,32 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     );
   }
 
+  _checkBiometricable ()async{
+    _biometricType = await ControllerUtils.getAvailableBiometrics();
+    if(_biometricType != BiometricAuth.none)
+    {
+      setState(() {
+        _showLocalAuthPopup(ControllerUtils.getBiometricString(_biometricType));
+      });
+    }
+    
+  }
+
+  _showLocalAuthPopup(String biometric) async{
+    await ControllerUtils.showDefaultPopupCheckBiometricAuth(
+      message: "Please use $biometric to unlock!",
+      callback: (result){
+        setState(() {
+          if(result)
+            _pass = "123456";
+        });
+      }
+    );
+  }
+
   @override
-  void initState() {
-    canCheckBiometric = ControllerUtils.getAvailableBiometrics() != BiometricAuth.none;
-    _editingUserNameController = TextEditingController();
-    _editingPassController = TextEditingController();
+  void initState()  {
+    _checkBiometricable();
     super.initState();
   }
 
@@ -86,6 +106,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 height: 50, 
                 width: _buttonLoginSize.width, 
                 hint: "Enter password!",
+                text: _pass,
                 onTextChanged: onPasswordInputChanged,
                 onTextReachedLimit: onPasswordReachedLimit,
               ),
@@ -128,6 +149,28 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   },
                 )
               ),
+              SizedBox(height: 25,),
+              _biometricType != BiometricAuth.none?
+              InkWell(
+                onTap: (){ _showLocalAuthPopup(ControllerUtils.getBiometricString(_biometricType));},
+                child: SizedBox(
+                  width: _buttonLoginSize.width,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[                    
+                      SizedBox(
+                        height: 25,
+                        width: 30,
+                        child: Image.asset("assets/images/fringer_print.png", fit: BoxFit.fill,)
+                      ),
+                      SizedBox(width: 5,),
+                      Text("Unlock by ${ControllerUtils.getBiometricString(_biometricType)}", style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400, letterSpacing: 0.3,)),
+                    ],
+                  ),
+                ),
+              ) 
+              : SizedBox()
             ],
           )
         ],
