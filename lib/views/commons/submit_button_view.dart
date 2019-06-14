@@ -25,7 +25,7 @@ class _SubmitButtonState extends State<SubmitButtonView> with SingleTickerProvid
   Size _buttonSize;
 
   AnimationController _controller;
-  Animation<double> _valueWidth, _rollbackWidthValue;
+  Animation<double> _valueWidth, _rollbackWidthValue, _scaleText;
 
 
 
@@ -43,9 +43,14 @@ class _SubmitButtonState extends State<SubmitButtonView> with SingleTickerProvid
     });
 
     _valueWidth = new Tween(begin: widget.size.width, end: widget.size.height).animate(_controller);
+    _scaleText = new Tween<double>(
+      begin: widget.status == ButtonStatus.rollback ? 0.3 : 1.0, 
+      end: widget.status == ButtonStatus.rollback ? 1.0 : 0.3
+    ).animate(_controller);
     _rollbackWidthValue = new Tween(begin: widget.size.height, end: widget.size.width).animate(_controller);
     super.initState();
-    _controller.forward();
+    if(widget.status != ButtonStatus.original)
+      _controller.forward();
   }
 
   @override
@@ -67,7 +72,7 @@ class _SubmitButtonState extends State<SubmitButtonView> with SingleTickerProvid
   {
     if(widget.status == ButtonStatus.tranform && _valueWidth.value == _buttonSize.height)
       return CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white));
-    return widget.text;
+    return ScaleTransition(scale: _scaleText, child: widget.text);
   }
 
   @override
