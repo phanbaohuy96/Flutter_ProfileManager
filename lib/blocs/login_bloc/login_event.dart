@@ -1,12 +1,11 @@
 import 'package:equatable/equatable.dart';
-import '../../models/user.dart';
 
 
 abstract class LoginEvent extends Equatable {}
 
 class AccessLogin extends LoginEvent{
-  final User user;
-  AccessLogin(this.user); 
+  final String pass;
+  AccessLogin(this.pass); 
 
   @override
   String toString() => 'AccessLogin';

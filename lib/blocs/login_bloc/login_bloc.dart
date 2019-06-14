@@ -16,7 +16,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>
     if(event is AccessLogin)
     {
       yield LoginProcessing(); 
-      yield accessLogin(event.user);
+      yield accessLogin(event.pass);
     } else if(event is LoginFailedCallback)
     {
       yield LoginFailed();  
@@ -31,9 +31,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>
 
   }
 
-  accessLogin(User user) async{
+  accessLogin(String pass) async{
     await Future.delayed(Duration(seconds: 2));
-    if(user.userName.toString().toLowerCase() == "admin" && user.password.toString().toLowerCase() == "admin")
+    if(pass == "123456")
     {
       this.dispatch(LoginSuccessfullyCallback());
     }else{
