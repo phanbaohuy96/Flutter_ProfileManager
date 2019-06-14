@@ -6,6 +6,7 @@ class TextfieldNumbericPassword extends StatefulWidget {
   final double height;
   final Color backgroundColor;
   final String hint;
+  final String text;
   final int passLength;
   final Function onTextChanged;
   final Function onTextReachedLimit;
@@ -16,6 +17,7 @@ class TextfieldNumbericPassword extends StatefulWidget {
     this.height = 50.0, 
     this.backgroundColor = Colors.white, 
     this.hint = "", 
+    this.text = "", 
     this.passLength = 6, 
     this.onTextChanged, 
     this.onTextReachedLimit}) : super(key: key);
@@ -36,7 +38,7 @@ class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
   void initState() {
     maxPassLength = widget.passLength;
     _textController = TextEditingController();
-    _focusNode = new FocusNode();
+    _focusNode = new FocusNode();    
     super.initState();
   }
 
@@ -65,7 +67,8 @@ class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
 
   @override
   Widget build(BuildContext context) {
-
+    _textController.text = widget.text;
+    onTextChanged(widget.text);
     List<Widget> items = [
       Align(
         alignment: Alignment.center,  
