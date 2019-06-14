@@ -30,7 +30,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   // ManagementSpendingPage _managementSpendingPage;
 
   //props
-  List<String> menuChild = ["Spendings", "Accounts", "Utility Bills", ];
+  List<String> menuChild = ["Utility Bills", "Accounts", "Spendings", "Borrowing"];
 
   @override
   void initState()
@@ -248,7 +248,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
         // {
         //   _managementSpendingPage = ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
         // }
-        return ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+        return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
       }
       case 1: 
       {
@@ -264,7 +264,8 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
         // {
         //   _utilityBills = UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
         // }
-        return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+        return ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+
       }      
     }
   }
