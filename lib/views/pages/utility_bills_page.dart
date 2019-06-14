@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profile_manager/models/billing_card.dart';
 import 'package:profile_manager/views/commons/doc_list_index_view.dart';
-import 'package:profile_manager/views/styles/colors_style.dart';
 
 class UtilityBills extends StatefulWidget {
   final bool isCollapsed;
@@ -12,20 +11,35 @@ class UtilityBills extends StatefulWidget {
   _UtilityBillsState createState() => _UtilityBillsState();
 }
 
-class _UtilityBillsState extends State<UtilityBills> {
+class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderStateMixin {
 
   Size _viewSize;
   int _firstIdxPage = 1;
   int _selectedIdx = 1;
+
   
 
 
   PageController _pageController;
 
+  AnimationController _controller;
+  Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     _pageController = PageController(initialPage: _firstIdxPage, viewportFraction: 0.9);
+    _controller = AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
+    _controller.forward();
     super.initState();
+  }
+
+  @override
+  void dispose()
+  {
+    _pageController.dispose();
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -77,13 +91,16 @@ class _UtilityBillsState extends State<UtilityBills> {
           child: SizedBox(
             child: Padding(
               padding: EdgeInsets.only(right: 20, left: 20),
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                itemBuilder: (context, idx){
-                  return buildListTransaction(idx);
-                },
-                itemCount: billingCards[_selectedIdx].transactions.length,
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemBuilder: (context, idx){
+                    return buildListTransaction(idx);
+                  },
+                  itemCount: billingCards[_selectedIdx].transactions.length,
+                ),
               ),              
             ),
           ),
@@ -144,6 +161,8 @@ class _UtilityBillsState extends State<UtilityBills> {
 
   void onPageChanged(int value) {
     setState(() {
+      _controller.reset();
+      _controller.forward();
       _selectedIdx = value;
     });
   }
@@ -159,10 +178,10 @@ class _UtilityBillsState extends State<UtilityBills> {
       _transactionDate = temp.getDateStringCurrentWeek();
     }
 
-    var item = Container( 
-      margin: EdgeInsets.only(bottom: 5),
+    var transaction = Container( 
+      margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         color: widget.mainColor
       ),
       child: Padding(
@@ -175,7 +194,7 @@ class _UtilityBillsState extends State<UtilityBills> {
               children: <Widget>[
                 SizedBox(width: 5,),
                 Icon(Icons.cloud, color: Colors.grey,),
-                SizedBox(width: 10,),
+                SizedBox(width: 15,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -193,14 +212,14 @@ class _UtilityBillsState extends State<UtilityBills> {
       ),
     );
 
-    return dateSoft != null? 
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[      
-        SizedBox(height: idx != 0? 10 : 0,),
-        Padding( padding: EdgeInsets.only(bottom: 5, left: 10), child: dateSoft,),
-        item
-    ],)
-    : item;
+    return dateSoft != null ?  Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[      
+                                  SizedBox(height: idx != 0? 10 : 0,),
+                                  Padding( padding: EdgeInsets.only(bottom: 10, left: 10), child: dateSoft,),
+                                  transaction
+                                ],
+                              )
+                              : transaction;
   }
 }
