@@ -62,6 +62,8 @@ class _ManagementAccountPageState extends State<ManagementAccountPage> with Sing
             ],
           ),
         ),
+
+        //list of accounts
         Padding(
           padding: EdgeInsets.only(right: 20, left: 20),
           child: Row(
@@ -77,7 +79,7 @@ class _ManagementAccountPageState extends State<ManagementAccountPage> with Sing
             ],
           ),
         ),
-
+        
         Expanded(
           child: SizedBox(
             child: Padding(
@@ -101,6 +103,22 @@ class _ManagementAccountPageState extends State<ManagementAccountPage> with Sing
             ),
           ),
         ),
+
+        //bottom bar
+        Padding(
+          padding: EdgeInsets.only(right: 10, left: 10),
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
+              color: widget.mainColor,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _buildBottomBar(),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -151,5 +169,27 @@ class _ManagementAccountPageState extends State<ManagementAccountPage> with Sing
         _accounts.add(AccountItem(account: accountGroups[i].accounts[j], backgroundColor: widget.mainColor, groupImageAsset: accountGroups[i].imageAsset));
       }
     return _accounts;
+  }
+
+  List<Widget> _buildBottomBar()
+  {
+    return [
+      IconButton(
+        icon: Icon(
+          Icons.add, 
+          color: widget.isCollapsed? Colors.black : Colors.white,
+        ),
+        onPressed: (){
+        },
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.settings, 
+          color: widget.isCollapsed? Colors.black : Colors.white,
+        ),
+        onPressed: (){
+        },
+      )
+    ];
   }
 }
