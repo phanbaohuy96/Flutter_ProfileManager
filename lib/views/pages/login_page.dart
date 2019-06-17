@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:profile_manager/controller/biometric_local_auth.dart';
 import 'package:profile_manager/controller/controller_utils.dart';
 import 'package:profile_manager/views/commons/textfield_numberic_password.dart';
 import '../commons/app_background_view.dart';
@@ -46,18 +47,18 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   }
 
   _checkBiometricable ()async{
-    _biometricType = await ControllerUtils.getAvailableBiometrics();
+    _biometricType = await BiometricUtils.getAvailableBiometrics();
     if(_biometricType != BiometricAuth.none)
     {
       setState(() {
-        _showLocalAuthPopup(ControllerUtils.getBiometricString(_biometricType));
+        _showLocalAuthPopup(BiometricUtils.getBiometricString(_biometricType));
       });
     }
     
   }
 
   _showLocalAuthPopup(String biometric) async{
-    await ControllerUtils.showDefaultPopupCheckBiometricAuth(
+    await BiometricUtils.showDefaultPopupCheckBiometricAuth(
       message: "Please use $biometric to unlock!",
       callback: (result){
         setState(() {
@@ -152,7 +153,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               SizedBox(height: 25,),
               _biometricType != BiometricAuth.none?
               InkWell(
-                onTap: (){ _showLocalAuthPopup(ControllerUtils.getBiometricString(_biometricType));},
+                onTap: (){ _showLocalAuthPopup(BiometricUtils.getBiometricString(_biometricType));},
                 child: SizedBox(
                   width: _buttonLoginSize.width,
                   child: Row(
@@ -165,7 +166,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                         child: Image.asset("assets/images/fringer_print.png", fit: BoxFit.fill,)
                       ),
                       SizedBox(width: 5,),
-                      Text("Unlock by ${ControllerUtils.getBiometricString(_biometricType)}", style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400, letterSpacing: 0.3,)),
+                      Text("Unlock by ${BiometricUtils.getBiometricString(_biometricType)}", style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400, letterSpacing: 0.3,)),
                     ],
                   ),
                 ),
