@@ -5,6 +5,8 @@ import 'package:profile_manager/views/pages/management_page/management_spending_
 import 'package:profile_manager/views/pages/management_page/management_utility_billing_page.dart';
 import 'package:profile_manager/views/styles/colors_style.dart';
 
+import 'management_page/management_loan_borrow_page.dart';
+
 
 class MenuDashboardPage extends StatefulWidget {
   @override
@@ -31,7 +33,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   // ManagementSpendingPage _managementSpendingPage;
 
   //props
-  List<String> menuChild = ["Utility Bills", "Accounts", "Spendings", "Borrowing"];
+  List<String> menuChild = ["Utility Bills", "Accounts", "Spendings", "Loan and borrow"];
 
   @override
   void initState()
@@ -175,8 +177,8 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
       duration: duration,
       top: 0,
       bottom: 0,
-      right: isCollapsed ? 0 : -0.5 * screenSize.width,
-      left: isCollapsed ? 0 : 0.5 * screenSize.width,
+      right: isCollapsed ? 0 : -0.6 * screenSize.width,
+      left: isCollapsed ? 0 : 0.6 * screenSize.width,
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: AnimatedBuilder(
@@ -261,7 +263,11 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
         // }
         return ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
 
-      }      
+      }     
+      case 3:
+      {
+        return ManagementLoanAndBorrowPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
+      } 
       default: return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
     }
   }
