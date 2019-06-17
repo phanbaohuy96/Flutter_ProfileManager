@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:profile_manager/controller/controller_utils.dart';
 import 'package:profile_manager/views/commons/textfield_numberic_password.dart';
-import 'package:profile_manager/views/pages/profile_info_page.dart';
-import '../../models/user.dart';
 import '../commons/app_background_view.dart';
 import '../commons/submit_button_view.dart';
 import '../../blocs/bloc.dart';
@@ -21,7 +19,6 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   BiometricAuth _biometricType;
   String _pass = "";
   
-
   onLogin(){
     _loginBloc.dispatch(AccessLogin(_pass));
   }
@@ -37,7 +34,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     onLogin();
   }
 
-  _genLoginBtnByStatus(ButtonStatus status, Function onTap, {Function onRollBackCompleted})
+  _buildLoginBtnByStatus(ButtonStatus status, Function onTap, {Function onRollBackCompleted})
   {
     return SubmitButtonView(
       size: _buttonLoginSize,
@@ -65,7 +62,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       callback: (result){
         setState(() {
           if(result)
-            _pass = "123456";
+          {
+            TextfieldNumbericPassword.textfieldState.notifyTextChange("123456");            
+          }
         });
       }
     );
@@ -117,8 +116,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                   builder: (BuildContext context, LoginState state){
                     if(state is LoginInitialization)
                     {        
-                      return _genLoginBtnByStatus(ButtonStatus.original, onLogin);
+                      return _buildLoginBtnByStatus(ButtonStatus.original, onLogin);
                     } else if (state is LoginSuccessfully){ 
+                      _pass = "";
                       WidgetsBinding.instance.addPostFrameCallback((_){
                         Navigator.push(context, 
                           MaterialPageRoute(builder: (context) => MenuDashboardPage())
@@ -139,11 +139,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                             )
                           );
                       });
-                      return _genLoginBtnByStatus(ButtonStatus.rollback, onLogin, onRollBackCompleted: () => _loginBloc.dispatch(LoginInit()));
+                      return _buildLoginBtnByStatus(ButtonStatus.rollback, onLogin, onRollBackCompleted: () => _loginBloc.dispatch(LoginInit()));
 
                     } else if(state is LoginProcessing)
                     {
-                      return _genLoginBtnByStatus(ButtonStatus.tranform, null);
+                      return _buildLoginBtnByStatus(ButtonStatus.tranform, null);
                     }
                     return null;                    
                   },

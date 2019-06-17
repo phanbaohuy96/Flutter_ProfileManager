@@ -105,6 +105,18 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
             ),
           ),
         ),
+        //bottom bar
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
+            color: widget.mainColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: _buildBottomBar(),
+          ),
+        )
       ],
     );
   }
@@ -221,5 +233,35 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
                                 ],
                               )
                               : transaction;
+  }
+
+  List<Widget> _buildBottomBar()
+  {
+    return [
+      IconButton(
+        icon: Icon(
+          Icons.add, 
+          color: widget.isCollapsed? Colors.black : Colors.white,
+        ),
+        onPressed: (){
+        },
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.show_chart, 
+          color: widget.isCollapsed? Colors.black : Colors.white,
+        ),
+        onPressed: (){
+        },
+      ),
+      IconButton(
+        icon: Icon(
+          Icons.settings, 
+          color: widget.isCollapsed? Colors.black : Colors.white,
+        ),
+        onPressed: (){
+        },
+      )
+    ];
   }
 }

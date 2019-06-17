@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:profile_manager/views/commons/circle_image_view.dart';
-import 'package:profile_manager/views/pages/management_account_page.dart';
-import 'package:profile_manager/views/pages/management_spending_page.dart';
-import 'package:profile_manager/views/pages/utility_bills_page.dart';
+import 'package:profile_manager/views/pages/management_page/management_account_page.dart';
+import 'package:profile_manager/views/pages/management_page/management_spending_page.dart';
+import 'package:profile_manager/views/pages/management_page/utility_bills_page.dart';
 import 'package:profile_manager/views/styles/colors_style.dart';
 
 
@@ -14,7 +14,7 @@ class MenuDashboardPage extends StatefulWidget {
 class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTickerProviderStateMixin {
 
   bool isCollapsed = true;
-  int _selectedIdx = 1;
+  int _selectedIdx = 0;
   Size screenSize;
   Duration duration = const Duration(milliseconds: 300);
   AnimationController _controller;
@@ -23,6 +23,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   Animation<Offset> _slideAnimation;
   Animation _colorAnimation;
   Animation _colorDashboardBarItemAnimation;
+
 
   //page
   // UtilityBills _utilityBills;
@@ -147,6 +148,17 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                       ],
                     ),
                     onTap: () => changeSelected(2),
+                  ),
+                  SizedBox(height: 20,),
+                  InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.assignment_return, color: getColorMenuItem(3)),
+                        SizedBox(width: 10,),
+                        Text(menuChild[3], style: getStyleMenuItem(3),),
+                      ],
+                    ),
+                    onTap: () => changeSelected(3),
                   )
                 ],
               ),
@@ -206,30 +218,13 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                 //main page
                 Expanded(
                   child: Container(
-                    color: Colors.grey.withOpacity(0.1),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(isCollapsed ? 0 : 30), bottomRight: Radius.circular(isCollapsed ? 0 : 30)),
+                      color: Colors.grey.withOpacity(0.1),
+                    ),                    
                     child: getMainPage(),
                   ),
-                ),
-
-                //bottom bar
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(isCollapsed ? 0 : 30), bottomRight: Radius.circular(isCollapsed ? 0 : 30)),
-                    color: Colors.grey.withOpacity(0.1),
-                  ),
-                  child: Container(
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(isCollapsed ? 0 : 30), bottomRight: Radius.circular(isCollapsed ? 0 : 30)),
-                      color: _colorAnimation.value,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: _buildBottomBar(),
-                    ),
-                  ),
-                )
-                
+                )                
               ],
             ),
           ),
@@ -267,54 +262,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
         return ManagementSpendingPage(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
 
       }      
+      default: return UtilityBills(isCollapsed: isCollapsed, mainColor: _colorAnimation.value,);
     }
-  }
-
-  List<Widget> _buildBottomBar()
-  {
-    List<Widget> buttons = [
-      IconButton(
-        icon: Icon(
-          Icons.bubble_chart, 
-          color: _colorDashboardBarItemAnimation.value,
-        ),
-        onPressed: (){
-        },
-      ),
-      IconButton(
-        icon: Icon(
-          Icons.home, 
-          color: _colorDashboardBarItemAnimation.value,
-        ),
-        onPressed: (){
-        },
-      ),
-      IconButton(
-        icon: Icon(
-          Icons.ring_volume, 
-          color: _colorDashboardBarItemAnimation.value,
-        ),
-        onPressed: (){
-        },
-      ),
-      IconButton(
-        icon: Icon(
-          Icons.person, 
-          color: _colorDashboardBarItemAnimation.value,
-        ),
-        onPressed: (){
-        },
-      ),
-    ];
-    switch(_selectedIdx)
-    {
-      case 0:
-        break;
-      case 1:
-        break;
-      case 2:
-        break; 
-    }
-    return buttons;
   }
 }
