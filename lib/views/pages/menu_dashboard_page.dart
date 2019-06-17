@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profile_manager/views/commons/circle_image_view.dart';
 import 'package:profile_manager/views/pages/management_page/management_account_page.dart';
 import 'package:profile_manager/views/pages/management_page/management_spending_page.dart';
-import 'package:profile_manager/views/pages/management_page/utility_bills_page.dart';
+import 'package:profile_manager/views/pages/management_page/management_utility_billing_page.dart';
 import 'package:profile_manager/views/styles/colors_style.dart';
 
 
