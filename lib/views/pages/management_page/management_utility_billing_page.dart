@@ -106,16 +106,19 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
           ),
         ),
         //bottom bar
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
-            color: widget.mainColor,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _buildBottomBar(),
-          ),
+        Padding(
+          padding: EdgeInsets.only(right: 10, left: 10),
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
+              color: widget.mainColor,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _buildBottomBar(),
+            ),
+          )
         )
       ],
     );
