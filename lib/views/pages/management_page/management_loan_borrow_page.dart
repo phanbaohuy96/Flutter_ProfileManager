@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profile_manager/controller/controller_utils.dart';
 import 'package:profile_manager/controller/loan_borrow_controler.dart';
 import 'package:profile_manager/models/loan_and_borrow.dart';
 import 'package:profile_manager/views/commons/loan_borrow_item_view.dart';
@@ -145,6 +146,7 @@ class _ManagementLoanAndBorrowPageState extends State<ManagementLoanAndBorrowPag
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   itemBuilder: (context, idx){
+                    return buildLoanAndBorrow(_getData()[idx], idx);
                     return LoanAndBorrowItem(
                       _getData()[idx], 
                       backgroundColor: widget.mainColor, 
@@ -182,6 +184,35 @@ class _ManagementLoanAndBorrowPageState extends State<ManagementLoanAndBorrowPag
   _getData(){
     if(_selectedField == 0) return LoanAndBorrowController.instance.getLoanings();
     else return LoanAndBorrowController.instance.getBorrowings();
+  }
+
+  String _labDate;
+
+  Widget buildLoanAndBorrow(LoanAndBorrow lab, int idx){
+    Text dateSoft;
+    if(_labDate == null || _labDate != ControllerUtils.instance.getDateString(lab.date))
+    {
+      dateSoft = Text(ControllerUtils.instance.getDateString(lab.date), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),);
+      _labDate = ControllerUtils.instance.getDateString(lab.date);
+    }
+
+    var labItem = LoanAndBorrowItem(
+      lab, 
+      backgroundColor: widget.mainColor, 
+      onLongPress: (idx){
+        print(idx);
+      },
+    );
+
+    return dateSoft != null ?  Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[      
+        SizedBox(height: idx != 0? 10 : 0,),
+        Padding( padding: EdgeInsets.only(bottom: 10, left: 10), child: dateSoft,),
+        labItem
+      ],
+    )
+    : labItem;
   }
 
   List<Widget> _buildBottomBar()

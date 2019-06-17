@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profile_manager/controller/controller_utils.dart';
+import 'package:profile_manager/controller/utility_billing_controller.dart';
 import 'package:profile_manager/models/billing_card.dart';
 import 'package:profile_manager/views/commons/doc_list_index_view.dart';
 
@@ -97,7 +99,7 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
                   itemBuilder: (context, idx){
-                    return buildListTransaction(idx);
+                    return buildTransaction(idx);
                   },
                   itemCount: billingCards[_selectedIdx].transactions.length,
                 ),
@@ -184,13 +186,13 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
 
   String _transactionDate;
   
-  Widget buildListTransaction(int idx) {
+  Widget buildTransaction(int idx) {
     Transaction temp = billingCards[_selectedIdx].transactions[idx];
     Text dateSoft;
-    if(_transactionDate == null || _transactionDate != temp.getDateStringCurrentWeek())
+    if(_transactionDate == null || _transactionDate != ControllerUtils.instance.getDateString(temp.date))
     {
-      dateSoft = Text(temp.getDateStringCurrentWeek(), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),);
-      _transactionDate = temp.getDateStringCurrentWeek();
+      dateSoft = Text(ControllerUtils.instance.getDateString(temp.date), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),);
+      _transactionDate = ControllerUtils.instance.getDateString(temp.date);
     }
 
     var transaction = Container( 
@@ -221,21 +223,21 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
               ],
             ),
             
-            Text(temp.getCostVND(), style: TextStyle(color: temp.isSpend? Colors.red : Colors.green, fontSize: 16))
+            Text(UtililyBillingController.instance.getCostTransactionVND(temp), style: TextStyle(color: temp.isSpend? Colors.red : Colors.green, fontSize: 16))
           ],
         ),
       ),
     );
 
     return dateSoft != null ?  Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[      
-                                  SizedBox(height: idx != 0? 10 : 0,),
-                                  Padding( padding: EdgeInsets.only(bottom: 10, left: 10), child: dateSoft,),
-                                  transaction
-                                ],
-                              )
-                              : transaction;
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[      
+        SizedBox(height: idx != 0? 10 : 0,),
+        Padding( padding: EdgeInsets.only(bottom: 10, left: 10), child: dateSoft,),
+        transaction
+      ],
+    )
+    : transaction;
   }
 
   List<Widget> _buildBottomBar()

@@ -1,3 +1,4 @@
+import 'package:profile_manager/controller/controller_utils.dart';
 import 'package:profile_manager/models/loan_and_borrow.dart';
 
 class LoanAndBorrowController{
@@ -41,5 +42,11 @@ class LoanAndBorrowController{
           _loanings.add(loanAndBorrows[i]);
     }
     return _borrowings;       
+  }
+
+  String getCostLABVND(LoanAndBorrow lab)
+  {
+    String result = ControllerUtils.instance.getCostVND(lab.cost);
+    return lab.isBorrow? "+" + result : "-" + result;
   }
 }

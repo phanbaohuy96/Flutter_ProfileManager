@@ -6,27 +6,7 @@ class LoanAndBorrow{
   bool isReturned;
   DateTime date;
 
-  LoanAndBorrow(this.transactionPerson, this.cost, this.description, this.isBorrow, this.date, {this.isReturned = false});
-
-  getCostVND()
-  {
-    String costStr = cost;
-    String result = " đ";
-    int count = 0;
-    for(int i = costStr.length - 1; i >= 0; i--)
-    {
-      if(count == 3)
-      {
-        result = costStr[i] + "," + result;
-        count = 1;
-      }
-      else{
-        result = costStr[i] + result;
-        count ++;
-      }
-    }
-    return isBorrow? "+" + result : "-" + result;
-  }
+  LoanAndBorrow(this.transactionPerson, this.cost, this.description, this.isBorrow, this.date, {this.isReturned = false});  
 
   hasDescription() => description != "";
 }

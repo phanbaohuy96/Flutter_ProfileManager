@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profile_manager/controller/loan_borrow_controler.dart';
 import 'package:profile_manager/models/loan_and_borrow.dart';
 
 class LoanAndBorrowItem extends StatefulWidget {
@@ -77,7 +78,7 @@ class _LoanAndBorrowItemState extends State<LoanAndBorrowItem> with SingleTicker
                         children: <Widget>[                          
                           Text(widget.loanAndBorrow.transactionPerson, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
                           SizedBox(height: 3,),
-                          Text(widget.loanAndBorrow.getCostVND(), style: TextStyle(color: widget.loanAndBorrow.isBorrow? Colors.green : Colors.red, fontSize: 16)),
+                          Text(LoanAndBorrowController.instance.getCostLABVND(widget.loanAndBorrow), style: TextStyle(color: widget.loanAndBorrow.isBorrow? Colors.green : Colors.red, fontSize: 16)),
                         ],
                       ),
                       _isExpanded && widget.loanAndBorrow.hasDescription() ? 

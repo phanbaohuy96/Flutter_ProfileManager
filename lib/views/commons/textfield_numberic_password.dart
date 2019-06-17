@@ -40,7 +40,6 @@ class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
 
   @override
   void initState() {
-    print("initState");
     maxPassLength = widget.passLength;
     _textController = TextEditingController();
     _focusNode = new FocusNode();   
