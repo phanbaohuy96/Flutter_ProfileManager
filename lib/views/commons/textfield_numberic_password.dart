@@ -22,8 +22,13 @@ class TextfieldNumbericPassword extends StatefulWidget {
     this.onTextChanged, 
     this.onTextReachedLimit}) : super(key: key);
 
+  
+  static _TextfieldNumbericPasswordState textfieldState ;
   @override
-  _TextfieldNumbericPasswordState createState() => _TextfieldNumbericPasswordState();
+  _TextfieldNumbericPasswordState createState(){
+    textfieldState = _TextfieldNumbericPasswordState();
+    return textfieldState;
+  }
 }
 
 class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
@@ -33,12 +38,14 @@ class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
   int curPassLength = 0;
   FocusNode _focusNode;
 
-
   @override
   void initState() {
+    print("initState");
     maxPassLength = widget.passLength;
     _textController = TextEditingController();
-    _focusNode = new FocusNode();    
+    _focusNode = new FocusNode();   
+    _textController.text = widget.text;
+    onTextChanged(widget.text); 
     super.initState();
   }
 
@@ -64,11 +71,14 @@ class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
     if(curPassLength == maxPassLength && widget.onTextReachedLimit != null) widget.onTextReachedLimit(text);
   }
 
+  notifyTextChange(String text)
+  {
+    _textController.text = text;
+    onTextChanged(text);
+  }
 
   @override
-  Widget build(BuildContext context) {
-    _textController.text = widget.text;
-    onTextChanged(widget.text);
+  Widget build(BuildContext context) {    
     List<Widget> items = [
       Align(
         alignment: Alignment.center,  
@@ -80,6 +90,7 @@ class _TextfieldNumbericPasswordState extends State<TextfieldNumbericPassword> {
             border: InputBorder.none,
             hintText: widget.hint
           ),
+          obscureText: true,
           inputFormatters: [
             LengthLimitingTextInputFormatter(maxPassLength),
           ] ,
