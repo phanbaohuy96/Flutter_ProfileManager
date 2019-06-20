@@ -1,4 +1,8 @@
+import 'package:profile_manager/controller/localization.dart';
+
 class ControllerUtils{
+  Localization localization = Localization();
+  
   static ControllerUtils instance = ControllerUtils._internal();
 
   factory ControllerUtils(){    
@@ -45,4 +49,6 @@ class ControllerUtils{
     }
     return result;
   }
+
+  //localization 
 }

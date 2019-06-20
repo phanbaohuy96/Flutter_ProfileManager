@@ -33,7 +33,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
   // ManagementSpendingPage _managementSpendingPage;
 
   //props
-  List<String> menuChild = ["Utility Bills", "Accounts", "Spendings", "Loan and borrow"];
+  List<String> menuChild = ["Utility Bills", "Accounts", "Spendings", "Loan and borrow", "Setting"];
 
   @override
   void initState()
@@ -122,7 +122,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                   InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.dashboard, color: getColorMenuItem(0)),
+                        Icon(Icons.payment, color: getColorMenuItem(0)),
                         SizedBox(width: 10,),
                         Text(menuChild[0], style: getStyleMenuItem(0),),
                       ],
@@ -144,7 +144,7 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                   InkWell(
                     child: Row(
                       children: <Widget>[
-                        Icon(Icons.payment, color: getColorMenuItem(2)),
+                        Icon(Icons.monetization_on, color: getColorMenuItem(2)),
                         SizedBox(width: 10,),
                         Text(menuChild[2], style: getStyleMenuItem(2),),
                       ],
@@ -161,7 +161,25 @@ class _MenuDashboardPageState extends State<MenuDashboardPage> with SingleTicker
                       ],
                     ),
                     onTap: () => changeSelected(3),
-                  )
+                  ),
+                  SizedBox(height: 20,),
+                  InkWell(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.settings, color: getColorMenuItem(4)),
+                        SizedBox(width: 10,),
+                        Text(menuChild[4], style: getStyleMenuItem(4),),
+                      ],
+                    ),
+                    onTap: () => changeSelected(4),
+                  ),
+                  Expanded(
+                      child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text("v0.0.1 - beta")
+                    ) 
+                  ),
+                  SizedBox(height: 5,),                 
                 ],
               ),
             ),
