@@ -13,26 +13,41 @@ class UtilityBills extends StatefulWidget {
   _UtilityBillsState createState() => _UtilityBillsState();
 }
 
-class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderStateMixin {
+class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMixin {
 
   Size _viewSize;
   int _firstIdxPage = 1;
   int _selectedIdx = 1;
+  bool _isOpenedheader = false;
 
   
 
 
   PageController _pageController;
 
+  //main
   AnimationController _controller;
   Animation<double> _fadeAnimation;
 
+  //header 
+  AnimationController _headerController;
+  Animation<Offset> _slideHeaderAnimation;
+  Animation _colorHearBackgroundAnimation;
+
   @override
   void initState() {
+    //main
     _pageController = PageController(initialPage: _firstIdxPage, viewportFraction: 0.9);
     _controller = AnimationController(duration: Duration(milliseconds: 500), vsync: this);
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
     _controller.forward();
+
+    //header
+    _headerController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+    _headerController.addListener(() => setState(() {}) );
+    _colorHearBackgroundAnimation = ColorTween(begin: Colors.transparent, end: Colors.black.withOpacity(0.5)).animate(_headerController);
+    _slideHeaderAnimation = Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, 1.0)).animate(_headerController);
+
     super.initState();
   }
 
@@ -41,86 +56,125 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
   {
     _pageController.dispose();
     _controller.dispose();
+    _headerController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _viewSize = MediaQuery.of(context).size;
-    return Column(      
+    return Stack(
       children: <Widget>[
-        Container(
-          height: 230.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight:  Radius.circular(30)),
-            color: widget.mainColor
-          ),
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 210,
-                child: PageView.builder(
-                  itemBuilder: (context, idx){
-                    return buildListBillingCard(idx);
-                  },
-                  controller: _pageController,
-                  itemCount: billingCards.length,
-                  onPageChanged: onPageChanged,
+        Column(      
+          children: <Widget>[
+            //header holder            
+            SizedBox(height: 230,),
+
+            //transaction 
+            Padding(
+              padding: EdgeInsets.only(right: 20, left: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text("Transactions", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: widget.isCollapsed? Colors.black : Colors.white),),
+                  IconButton(
+                    icon: Icon(Icons.transform, color: widget.isCollapsed? Colors.black : Colors.white), 
+                    onPressed: (){
+                      
+                    },
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 20, left: 20),
+                  child: FadeTransition(
+                    opacity: _fadeAnimation,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      itemBuilder: (context, idx){
+                        return buildTransaction(idx);
+                      },
+                      itemCount: billingCards[_selectedIdx].transactions.length,
+                    ),
+                  ),
                 ),
               ),
-              DocListIndex(numItems: billingCards.length, selectedIdx: _selectedIdx, normalColor: Colors.grey.withOpacity(0.3),)
-            ],
-          ),
+            ),
+
+            //bottombar holder
+            SizedBox(height: 50,)
+          ],
         ),
 
-        //transaction 
-        Padding(
-          padding: EdgeInsets.only(right: 20, left: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text("Transactions", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: widget.isCollapsed? Colors.black : Colors.white),),
-              IconButton(
-                icon: Icon(Icons.transform, color: widget.isCollapsed? Colors.black : Colors.white), 
-                onPressed: (){
-                  
-                },
-              )
-            ],
-          ),
+        //Header open background
+        AnimatedBuilder(
+          animation: _colorHearBackgroundAnimation,
+          builder: (context, child) => _isOpenedheader ? 
+            Container(color: _colorHearBackgroundAnimation.value,)
+            :SizedBox()
         ),
-        Expanded(
-          child: SizedBox(
-            child: Padding(
-              padding: EdgeInsets.only(right: 20, left: 20),
-              child: FadeTransition(
-                opacity: _fadeAnimation,
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemBuilder: (context, idx){
-                    return buildTransaction(idx);
-                  },
-                  itemCount: billingCards[_selectedIdx].transactions.length,
+        //header
+        Stack(
+          children: <Widget>[
+            
+            SlideTransition(
+              position: _slideHeaderAnimation,
+              child: Container(
+                height: 210, 
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight:  Radius.circular(30)),
+                  color: widget.mainColor
                 ),
-              ),              
+              ),
             ),
-          ),
+            Container(
+              height: 230.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(_isOpenedheader? 0 : 30), bottomRight:  Radius.circular(_isOpenedheader? 0 : 30)),
+                color: widget.mainColor
+              ),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 210,
+                    child: PageView.builder(
+                      itemBuilder: (context, idx){
+                        return buildListBillingCard(idx);
+                      },
+                      controller: _pageController,
+                      itemCount: billingCards.length,
+                      onPageChanged: onPageChanged,
+                    ),
+                  ),
+                  DocListIndex(numItems: billingCards.length, selectedIdx: _selectedIdx, normalColor: Colors.grey.withOpacity(0.3),)
+                ],
+              ),
+            ),
+          ],
         ),
-        //bottom bar
-        Padding(
-          padding: EdgeInsets.only(right: 10, left: 10),
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
-              color: widget.mainColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: _buildBottomBar(),
-            ),
-          )
+        Column(
+          children: <Widget>[
+            Expanded(child: SizedBox(),),
+            //bottom bar
+            Padding(
+              padding: EdgeInsets.only(right: 10, left: 10),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
+                  color: widget.mainColor,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: _buildBottomBar(),
+                ),
+              )
+            )
+          ],
         )
       ],
     );
@@ -249,6 +303,11 @@ class _UtilityBillsState extends State<UtilityBills> with SingleTickerProviderSt
           color: widget.isCollapsed? Colors.black : Colors.white,
         ),
         onPressed: (){
+          if(_isOpenedheader)
+            _headerController.reverse();
+          else
+            _headerController.forward();
+          _isOpenedheader = !_isOpenedheader;
         },
       ),
       IconButton(
