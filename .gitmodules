@@ -1,0 +1,3 @@
+[submodule "internal/flutter_base"]
+	path = internal/flutter_base
+	url = https://github.com/phanbaohuy96/flutter_base.git
