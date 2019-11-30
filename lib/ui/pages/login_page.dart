@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:profile_manager/controller/biometric_local_auth.dart';
-import 'package:profile_manager/controller/controller_utils.dart';
-import 'package:profile_manager/views/commons/textfield_numberic_password.dart';
-import '../commons/app_background_view.dart';
-import '../commons/submit_button_view.dart';
+import 'package:profile_manager/ui/widget/app_background_view.dart';
+import 'package:profile_manager/ui/widget/submit_button_view.dart';
+import 'package:profile_manager/ui/widget/textfield_numberic_password.dart';
 import '../../blocs/bloc.dart';
 import 'menu_dashboard_page.dart';
 

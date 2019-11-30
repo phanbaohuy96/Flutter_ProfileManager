@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profile_manager/controller/controller_utils.dart';
 import 'package:profile_manager/controller/loan_borrow_controler.dart';
 import 'package:profile_manager/models/loan_and_borrow.dart';
-import 'package:profile_manager/views/commons/loan_borrow_item_view.dart';
+import 'package:profile_manager/ui/widget/loan_borrow_item_view.dart';
 
 class ManagementLoanAndBorrowPage extends StatefulWidget {
   final bool isCollapsed;
@@ -147,13 +147,6 @@ class _ManagementLoanAndBorrowPageState extends State<ManagementLoanAndBorrowPag
                   shrinkWrap: true,
                   itemBuilder: (context, idx){
                     return buildLoanAndBorrow(_getData()[idx], idx);
-                    return LoanAndBorrowItem(
-                      _getData()[idx], 
-                      backgroundColor: widget.mainColor, 
-                      onLongPress: (idx){
-                        print(idx);
-                      },
-                    );
                   },
                   itemCount: _getData().length,
                 ),

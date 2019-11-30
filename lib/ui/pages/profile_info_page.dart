@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:profile_manager/views/commons/circle_image_view.dart';
-import 'package:profile_manager/views/commons/image_background_animate_view.dart';
-import 'package:profile_manager/views/styles/colors_style.dart';
+import 'package:profile_manager/ui/styles/colors_style.dart';
+import 'package:profile_manager/ui/widget/circle_image_view.dart';
+import 'package:profile_manager/ui/widget/image_background_animate_view.dart';
 
 
 class ProfileInfo extends StatefulWidget {

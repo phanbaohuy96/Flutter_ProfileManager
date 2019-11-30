@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profile_manager/controller/controller_utils.dart';
 import 'package:profile_manager/controller/utility_billing_controller.dart';
 import 'package:profile_manager/models/billing_card.dart';
-import 'package:profile_manager/views/commons/doc_list_index_view.dart';
+import 'package:profile_manager/ui/widget/doc_list_index_view.dart';
 
 class UtilityBills extends StatefulWidget {
   final bool isCollapsed;

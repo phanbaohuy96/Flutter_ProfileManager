@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profile_manager/models/account.dart';
-import 'package:profile_manager/views/commons/account_item_view.dart';
-import 'package:profile_manager/views/commons/doc_list_index_view.dart';
+import 'package:profile_manager/ui/widget/account_item_view.dart';
+import 'package:profile_manager/ui/widget/doc_list_index_view.dart';
 
 class ManagementAccountPage extends StatefulWidget {
 
