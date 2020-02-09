@@ -57,6 +57,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
   }
 
   _showLocalAuthPopup(String biometric) async{
+    TextfieldNumbericPassword.textfieldState.notifyTextChange("");
     await BiometricUtils.showDefaultPopupCheckBiometricAuth(
       message: "Please use $biometric to unlock!",
       callback: (result){
