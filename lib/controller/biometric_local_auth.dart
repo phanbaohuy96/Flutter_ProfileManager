@@ -1,17 +1,14 @@
 import 'package:local_auth/local_auth.dart';
 
 //local auth
-enum BiometricAuth{
-  faceID,
-  touchID,
-  none
-}
+enum BiometricAuth { faceID, touchID, none }
 
-class BiometricUtils{
-
+class BiometricUtils {
   //local authentication
-  static Future<BiometricAuth> getAvailableBiometrics({BiometricType type = BiometricType.fingerprint}) async {
-    List<BiometricType> availableBiometrics = await LocalAuthentication().getAvailableBiometrics();
+  static Future<BiometricAuth> getAvailableBiometrics(
+      {BiometricType type = BiometricType.fingerprint}) async {
+    final List<BiometricType> availableBiometrics =
+        await LocalAuthentication().getAvailableBiometrics();
     if (availableBiometrics.contains(BiometricType.face)) {
       return BiometricAuth.faceID;
     } else if (availableBiometrics.contains(BiometricType.fingerprint)) {
@@ -20,21 +17,22 @@ class BiometricUtils{
     return BiometricAuth.none;
   }
 
-  static Future<void> showDefaultPopupCheckBiometricAuth({String message = "", Function(bool) callback}) async{
-    var localAuth = LocalAuthentication();
-    bool result = await localAuth.authenticateWithBiometrics(
-            localizedReason: message);
-    if(callback != null)
-      callback(result);
+  static Future<void> showDefaultPopupCheckBiometricAuth(
+      {String message = '', Function(bool) callback}) async {
+    final localAuth = LocalAuthentication();
+    final bool result =
+        await localAuth.authenticateWithBiometrics(localizedReason: message);
+    callback?.call(result);
   }
 
-  static String getBiometricString(BiometricAuth type)
-  {
-    switch(type)
-    {
-      case BiometricAuth.faceID:  return "Face ID";
-      case BiometricAuth.touchID: return "Touch ID";
-      default:                    return "Touch ID";
+  static String getBiometricString(BiometricAuth type) {
+    switch (type) {
+      case BiometricAuth.faceID:
+        return 'Face ID';
+      case BiometricAuth.touchID:
+        return 'Touch ID';
+      default:
+        return 'Touch ID';
     }
   }
 }

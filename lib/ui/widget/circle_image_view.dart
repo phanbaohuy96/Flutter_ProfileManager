@@ -16,21 +16,16 @@ class CircleImageView extends StatelessWidget {
   }
 }
 
-class CircleClip extends CustomClipper<Rect>{
-
+class CircleClip extends CustomClipper<Rect> {
   @override
-  getClip(Size size) {
-    // TODO: implement getClip 
+  Rect getClip(Size size) {
     return Rect.fromCircle(
-      center: Offset(size.width / 2, size.height / 2),
-      radius: min(size.width, size.height) / 2
-    );
+        center: Offset(size.width / 2, size.height / 2),
+        radius: min(size.width, size.height) / 2);
   }
 
   @override
   bool shouldReclip(CustomClipper oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
-
 }

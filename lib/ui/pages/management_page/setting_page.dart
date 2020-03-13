@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SettingPage extends StatefulWidget {
-
   final bool isCollapsed;
   final Color mainColor;
 
-  const SettingPage({Key key, this.isCollapsed, this.mainColor}) : super(key: key);
-
+  const SettingPage({Key key, this.isCollapsed, this.mainColor})
+      : super(key: key);
 
   @override
   _SettingPageState createState() => _SettingPageState();
@@ -15,8 +14,6 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }

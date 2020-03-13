@@ -13,15 +13,11 @@ class UtilityBills extends StatefulWidget {
   _UtilityBillsState createState() => _UtilityBillsState();
 }
 
-class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMixin {
-
-  Size _viewSize;
-  int _firstIdxPage = 1;
+class _UtilityBillsState extends State<UtilityBills>
+    with TickerProviderStateMixin {
+  final int _firstIdxPage = 1;
   int _selectedIdx = 1;
   bool _isOpenedheader = false;
-
-  
-
 
   PageController _pageController;
 
@@ -29,7 +25,7 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
   AnimationController _controller;
   Animation<double> _fadeAnimation;
 
-  //header 
+  //header
   AnimationController _headerController;
   Animation<Offset> _slideHeaderAnimation;
   Animation _colorHearBackgroundAnimation;
@@ -37,23 +33,33 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
   @override
   void initState() {
     //main
-    _pageController = PageController(initialPage: _firstIdxPage, viewportFraction: 0.9);
-    _controller = AnimationController(duration: Duration(milliseconds: 500), vsync: this);
+    _pageController =
+        PageController(initialPage: _firstIdxPage, viewportFraction: 0.9);
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(_controller);
     _controller.forward();
 
     //header
-    _headerController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
-    _headerController.addListener(() => setState(() {}) );
-    _colorHearBackgroundAnimation = ColorTween(begin: Colors.transparent, end: Colors.black.withOpacity(0.5)).animate(_headerController);
-    _slideHeaderAnimation = Tween<Offset>(begin: Offset(0.0, 0.0), end: Offset(0.0, 1.0)).animate(_headerController);
+    _headerController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    )..addListener(() => setState(() {}));
+    _colorHearBackgroundAnimation = ColorTween(
+            begin: Colors.transparent, end: Colors.black.withOpacity(0.5))
+        .animate(_headerController);
+    _slideHeaderAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(0.0, 1.0),
+    ).animate(_headerController);
 
     super.initState();
   }
 
   @override
-  void dispose()
-  {
+  void dispose() {
     _pageController.dispose();
     _controller.dispose();
     _headerController.dispose();
@@ -62,26 +68,35 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    _viewSize = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
-        Column(      
+        Column(
           children: <Widget>[
-            //header holder            
-            SizedBox(height: 230,),
+            //header holder
+            const SizedBox(
+              height: 230,
+            ),
 
-            //transaction 
+            //transaction
             Padding(
-              padding: EdgeInsets.only(right: 20, left: 20),
+              padding: const EdgeInsets.only(right: 20, left: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text("Transactions", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: widget.isCollapsed? Colors.black : Colors.white),),
+                  Text(
+                    'Transactions',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: widget.isCollapsed ? Colors.black : Colors.white,
+                    ),
+                  ),
                   IconButton(
-                    icon: Icon(Icons.transform, color: widget.isCollapsed? Colors.black : Colors.white), 
-                    onPressed: (){
-                      
-                    },
+                    icon: Icon(
+                      Icons.transform,
+                      color: widget.isCollapsed ? Colors.black : Colors.white,
+                    ),
+                    onPressed: () {},
                   )
                 ],
               ),
@@ -89,13 +104,13 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
             Expanded(
               child: SizedBox(
                 child: Padding(
-                  padding: EdgeInsets.only(right: 20, left: 20),
+                  padding: const EdgeInsets.only(right: 20, left: 20),
                   child: FadeTransition(
                     opacity: _fadeAnimation,
                     child: ListView.builder(
                       padding: EdgeInsets.zero,
                       shrinkWrap: true,
-                      itemBuilder: (context, idx){
+                      itemBuilder: (context, idx) {
                         return buildTransaction(idx);
                       },
                       itemCount: billingCards[_selectedIdx].transactions.length,
@@ -106,43 +121,51 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
             ),
 
             //bottombar holder
-            SizedBox(height: 50,)
+            const SizedBox(
+              height: 50,
+            )
           ],
         ),
 
         //Header open background
         AnimatedBuilder(
-          animation: _colorHearBackgroundAnimation,
-          builder: (context, child) => _isOpenedheader ? 
-            Container(color: _colorHearBackgroundAnimation.value,)
-            :SizedBox()
-        ),
+            animation: _colorHearBackgroundAnimation,
+            builder: (context, child) => _isOpenedheader
+                ? Container(
+                    color: _colorHearBackgroundAnimation.value,
+                  )
+                : const SizedBox()),
         //header
         Stack(
           children: <Widget>[
-            
             SlideTransition(
               position: _slideHeaderAnimation,
               child: Container(
-                height: 210, 
+                height: 210,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight:  Radius.circular(30)),
-                  color: widget.mainColor
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30),
+                  ),
+                  color: widget.mainColor,
                 ),
               ),
             ),
             Container(
               height: 230.0,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(_isOpenedheader? 0 : 30), bottomRight:  Radius.circular(_isOpenedheader? 0 : 30)),
-                color: widget.mainColor
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(_isOpenedheader ? 0 : 30),
+                  bottomRight: Radius.circular(_isOpenedheader ? 0 : 30),
+                ),
+                color: widget.mainColor,
               ),
               child: Column(
                 children: <Widget>[
                   SizedBox(
                     height: 210,
                     child: PageView.builder(
-                      itemBuilder: (context, idx){
+                      itemBuilder: (context, idx) {
                         return buildListBillingCard(idx);
                       },
                       controller: _pageController,
@@ -150,7 +173,11 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
                       onPageChanged: onPageChanged,
                     ),
                   ),
-                  DocListIndex(numItems: billingCards.length, selectedIdx: _selectedIdx, normalColor: Colors.grey.withOpacity(0.3),)
+                  DocListIndex(
+                    numItems: billingCards.length,
+                    selectedIdx: _selectedIdx,
+                    normalColor: Colors.grey.withOpacity(0.3),
+                  )
                 ],
               ),
             ),
@@ -158,22 +185,28 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
         ),
         Column(
           children: <Widget>[
-            Expanded(child: SizedBox(),),
+            const Expanded(
+              child: SizedBox(),
+            ),
             //bottom bar
             Padding(
-              padding: EdgeInsets.only(right: 10, left: 10),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30), bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30), bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30)),
-                  color: widget.mainColor,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: _buildBottomBar(),
-                ),
-              )
-            )
+                padding: const EdgeInsets.only(right: 10, left: 10),
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(30),
+                      topRight: const Radius.circular(30),
+                      bottomLeft: Radius.circular(widget.isCollapsed ? 0 : 30),
+                      bottomRight: Radius.circular(widget.isCollapsed ? 0 : 30),
+                    ),
+                    color: widget.mainColor,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: _buildBottomBar(),
+                  ),
+                ))
           ],
         )
       ],
@@ -183,45 +216,49 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
   Widget buildListBillingCard(int idx) {
     return AnimatedBuilder(
       animation: _pageController,
-      builder: (context, child){
+      builder: (context, child) {
         double value = 1;
-        if(_pageController.position.haveDimensions){
+        if (_pageController.position.haveDimensions) {
           value = _pageController.page - idx;
           value = (1 - (value.abs() * 0.2)).clamp(0.0, 1.0);
           return Transform.translate(
-            offset: _selectedIdx == idx ? Offset(0, 0) : (idx < _selectedIdx ? Offset(50, 0) : Offset(-50, 0)),
+            offset: _selectedIdx == idx
+                ? const Offset(0, 0)
+                : idx < _selectedIdx
+                    ? const Offset(50, 0)
+                    : const Offset(-50, 0),
+            child: Transform.scale(scale: value, child: child),
+          );
+        } else {
+          return Transform.translate(
+            offset: _selectedIdx == idx
+                ? const Offset(0, 0)
+                : idx < _selectedIdx
+                    ? const Offset(50, 0)
+                    : const Offset(-50, 0),
             child: Transform.scale(
-              scale: value,
-              child: child
+              scale: idx == _firstIdxPage ? value : value * 0.8,
+              child: child,
             ),
           );
         }
-        else{
-          return Transform.translate(
-            offset: _selectedIdx == idx ? Offset(0, 0) : (idx < _selectedIdx ? Offset(50, 0) : Offset(-50, 0)),
-            child: Transform.scale(
-              scale: idx == _firstIdxPage? value : value * 0.8,
-              child: child
-            ),
-          );
-        }        
       },
       child: Padding(
-        padding: EdgeInsets.only(bottom: 15, left: 15, right: 15),
+        padding: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
         child: Stack(
           children: <Widget>[
             Align(
               child: Material(
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
                 color: Colors.transparent,
                 elevation: 10,
                 shadowColor: Colors.blue,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),                  
-                  child: Image.asset("assets/images/credit_card.png")
-                )
+                  borderRadius: const BorderRadius.all(Radius.circular(30)),
+                  child: Image.asset('assets/images/credit_card.png'),
+                ),
               ),
             ),
           ],
@@ -232,99 +269,131 @@ class _UtilityBillsState extends State<UtilityBills> with TickerProviderStateMix
 
   void onPageChanged(int value) {
     setState(() {
-      _controller.reset();
-      _controller.forward();
+      _controller
+        ..reset()
+        ..forward();
       _selectedIdx = value;
     });
   }
 
   String _transactionDate;
-  
+
   Widget buildTransaction(int idx) {
-    Transaction temp = billingCards[_selectedIdx].transactions[idx];
+    final Transaction temp = billingCards[_selectedIdx].transactions[idx];
     Text dateSoft;
-    if(_transactionDate == null || _transactionDate != ControllerUtils.instance.getDateString(temp.date))
-    {
-      dateSoft = Text(ControllerUtils.instance.getDateString(temp.date), style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),);
+    if (_transactionDate == null ||
+        _transactionDate != ControllerUtils.instance.getDateString(temp.date)) {
+      dateSoft = Text(
+        ControllerUtils.instance.getDateString(temp.date),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+      );
       _transactionDate = ControllerUtils.instance.getDateString(temp.date);
     }
 
-    var transaction = Container( 
-      margin: EdgeInsets.only(bottom: 10),
+    final transaction = Container(
+      margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: widget.mainColor
-      ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: widget.mainColor),
       child: Padding(
-        padding: EdgeInsets.only(right: 10, left: 10, bottom: 5, top: 5),
+        padding: const EdgeInsets.only(right: 10, left: 10, bottom: 5, top: 5),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Row(
               children: <Widget>[
-                SizedBox(width: 5,),
-                Icon(Icons.cloud, color: Colors.grey,),
-                SizedBox(width: 15,),
+                const SizedBox(
+                  width: 5,
+                ),
+                Icon(
+                  Icons.cloud,
+                  color: Colors.grey,
+                ),
+                const SizedBox(
+                  width: 15,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(temp.action.name, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 16)),
-                    SizedBox(height: 3,),
-                    Text(temp.actionPlace.name, style: TextStyle(color: Colors.grey, fontSize: 14))
+                    Text(temp.action.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 16)),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    Text(
+                      temp.actionPlace.name,
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    )
                   ],
                 ),
               ],
             ),
-            
-            Text(UtililyBillingController.instance.getCostTransactionVND(temp), style: TextStyle(color: temp.isSpend? Colors.red : Colors.green, fontSize: 16))
+            Text(
+              UtililyBillingController.instance.getCostTransactionVND(temp),
+              style: TextStyle(
+                color: temp.isSpend ? Colors.red : Colors.green,
+                fontSize: 16,
+              ),
+            )
           ],
         ),
       ),
     );
 
-    return dateSoft != null ?  Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[      
-        SizedBox(height: idx != 0? 10 : 0,),
-        Padding( padding: EdgeInsets.only(bottom: 10, left: 10), child: dateSoft,),
-        transaction
-      ],
-    )
-    : transaction;
+    return dateSoft != null
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: idx != 0 ? 10 : 0,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10, left: 10),
+                child: dateSoft,
+              ),
+              transaction
+            ],
+          )
+        : transaction;
   }
 
-  List<Widget> _buildBottomBar()
-  {
+  List<Widget> _buildBottomBar() {
     return [
       IconButton(
         icon: Icon(
-          Icons.add, 
-          color: widget.isCollapsed? Colors.black : Colors.white,
+          Icons.add,
+          color: widget.isCollapsed ? Colors.black : Colors.white,
         ),
-        onPressed: (){
-          if(_isOpenedheader)
+        onPressed: () {
+          if (_isOpenedheader) {
             _headerController.reverse();
-          else
+          } else {
             _headerController.forward();
+          }
           _isOpenedheader = !_isOpenedheader;
         },
       ),
       IconButton(
         icon: Icon(
-          Icons.show_chart, 
-          color: widget.isCollapsed? Colors.black : Colors.white,
+          Icons.show_chart,
+          color: widget.isCollapsed ? Colors.black : Colors.white,
         ),
-        onPressed: (){
-        },
+        onPressed: () {},
       ),
       IconButton(
         icon: Icon(
-          Icons.settings, 
-          color: widget.isCollapsed? Colors.black : Colors.white,
+          Icons.settings,
+          color: widget.isCollapsed ? Colors.black : Colors.white,
         ),
-        onPressed: (){
-        },
+        onPressed: () {},
       )
     ];
   }

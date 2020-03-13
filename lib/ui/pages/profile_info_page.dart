@@ -3,7 +3,6 @@ import 'package:profile_manager/ui/styles/colors_style.dart';
 import 'package:profile_manager/ui/widget/circle_image_view.dart';
 import 'package:profile_manager/ui/widget/image_background_animate_view.dart';
 
-
 class ProfileInfo extends StatefulWidget {
   @override
   _ProfileInfoState createState() => _ProfileInfoState();
@@ -16,16 +15,17 @@ class _ProfileInfoState extends State<ProfileInfo> {
       body: Stack(
         children: <Widget>[
           //background
-          ImageBackgroundAnimateView("assets/images/bg_1.jpg"),
+          const ImageBackgroundAnimateView('assets/images/bg_1.jpg'),
 
           //infomation
           Padding(
-            padding: EdgeInsets.only(top: 35, left: 10, right: 10, bottom: 10),
+            padding:
+                const EdgeInsets.only(top: 35, left: 10, right: 10, bottom: 10),
             child: Container(
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
                 color: blurColor,
               ),
               child: SingleChildScrollView(
@@ -37,7 +37,12 @@ class _ProfileInfoState extends State<ProfileInfo> {
                       child: SizedBox(
                         width: 200,
                         height: 200,
-                        child: CircleImageView(image: Image.asset("assets/images/bg_1.jpg", fit: BoxFit.fitWidth,))
+                        child: CircleImageView(
+                          image: Image.asset(
+                            'assets/images/bg_1.jpg',
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
                       ),
                     )
                   ],
